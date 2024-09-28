@@ -1,0 +1,65 @@
+# Node.js の依存関係
+node_modules/
+
+# Python のバイトコード
+__pycache__/
+*.pyc
+
+# 環境設定ファイル
+.env
+
+# IDE 特有の設定ファイル
+.vscode/
+.idea/
+
+# .NET Core / .NET 5+ のビルド出力
+bin/
+obj/
+
+# Visual Studio のユーザ設定ファイル
+*.suo
+*.user
+*.userprefs
+*.sln.ide
+
+# Visual Studio のワークスペースファイル
+.vs/
+
+# パッケージ管理用のフォルダ
+packages/
+*.nupkg
+
+# 環境設定ファイル
+.env
+
+# ログファイル
+*.log
+
+# .NET Core の開発環境
+project.lock.json
+project.json
+*.db
+
+# NuGet のキャッシュ
+*.snupkg
+*.nupkg
+*.symbols.nupkg
+*.pdb
+
+# Docker 用のファイル
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# GitHub Actions のワークフローの一時ファイル
+.github/workflows/*.yml
+
+# User secrets
+secrets.json
+
+# その他
+*.dbmdl
+*.dbproj
+*.jfm
+*.pfx
+*.publishsettings
