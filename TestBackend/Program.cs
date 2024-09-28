@@ -56,7 +56,7 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 }
 
 // GraphQLクエリのクラスを定義
-// 仮
+// 仮クエリ
 public class Query
 {
     public string Hello() => "Hello, GraphQL!";
