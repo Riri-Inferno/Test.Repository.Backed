@@ -9,6 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Interfaces;
 using TestBackend.Repositories;
+using TestBackend.Usecases;
+using TestBackend.Interactor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,9 +40,15 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>(); // Queryクラスを追加
 
+//Todo:エラーページのミドルウェアを追加する。以下のように追加
+// app.UseDeveloperExceptionPage();
+
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
 builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWriteRepository<>));
+
+// Usecaseなど
+builder.Services.AddScoped<IUserUsecase, UserReadInteractor>();
 
 var app = builder.Build();
 

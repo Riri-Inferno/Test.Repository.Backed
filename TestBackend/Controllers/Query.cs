@@ -1,11 +1,20 @@
 using System.Runtime.CompilerServices;
 using TestBackend.Interactor.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using TestBackend.Usecases;
 
 
 namespace TestBackend.Controllers;
 
-public class Query
+public class Query: ControllerBase
 {
+    private readonly IUserUsecase _userReadUsecase;
+
+    public Query(IUserUsecase userReadUsecase)
+    {
+        _userReadUsecase = userReadUsecase;
+    }
+    
     /// <summary>
     /// 動作確認用のクエリ
     /// </summary>
@@ -16,14 +25,10 @@ public class Query
     /// Userレコード取得クエリ
     /// </summary>
     /// <returns></returns>
-    public async Task<UserReadResponse> ExcuteAsunc(int id)
+    public async Task<UserReadResponse> GetUserReadAsync(int id)
     {
+        var response = await _userReadUsecase.hoge(id);
 
-        // 仮のレスポンス
-        return new UserReadResponse{
-            Id = id,
-            Name = "hoge",
-            Email = "tekitou.com",
-        };
+        return response; // レスポンスを返す
     }
 }
