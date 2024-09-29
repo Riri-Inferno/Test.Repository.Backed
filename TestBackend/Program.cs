@@ -26,7 +26,7 @@ var user = builder.Configuration["user"];
 var password = builder.Configuration["password"];
 
 // PostgreSQL用の接続文字列を生成
-var connectionString = $"Host={endpoint};Port=5432;Database=your_database_name;Username={user};Password={password}";
+var connectionString = $"Host={endpoint};Port=5432;Database=postgres;Username={user};Password={password}";
 
 // 接続文字列を使用してサービスに PostgreSQL コンテキストを登録
 builder.Services.AddDbContext<MyDbContext>(options =>

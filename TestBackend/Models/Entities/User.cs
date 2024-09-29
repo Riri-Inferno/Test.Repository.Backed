@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TestBackend.Models.Entities
 {
     /// <summary>
@@ -8,6 +10,7 @@ namespace TestBackend.Models.Entities
         /// <summary>
         /// ユーザーID
         /// </summary>
+        [Required]
         public int Id { get; set; }
 
         /// <summary>
@@ -18,6 +21,9 @@ namespace TestBackend.Models.Entities
         /// <summary>
         /// メールアドレス
         /// </summary>
+        /// [Required]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
     }
 }

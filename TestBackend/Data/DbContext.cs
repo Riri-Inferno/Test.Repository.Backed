@@ -1,5 +1,7 @@
+using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Models.Entities;
+using System.ComponentModel.DataAnnotations;
 
 // 現在はReadとWriteで分けてない
 namespace TestBackend.Data
@@ -8,8 +10,9 @@ namespace TestBackend.Data
     {
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
+            
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
