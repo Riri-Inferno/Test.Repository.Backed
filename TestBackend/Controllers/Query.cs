@@ -25,9 +25,9 @@ public class Query: ControllerBase
     /// Userレコード取得クエリ
     /// </summary>
     /// <returns></returns>
-    public async Task<UserReadResponse> GetUserReadAsync(int id)
+    public async Task<UserReadResponse> GetUserAsync(int id)
     {
-        var response = await _userReadUsecase.hoge(id);
+        var response = await _userReadUsecase.ExcuteAsync(id);
 
         return response; // レスポンスを返す
     }

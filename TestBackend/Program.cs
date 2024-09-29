@@ -11,6 +11,10 @@ using TestBackend.Interfaces;
 using TestBackend.Repositories;
 using TestBackend.Usecases;
 using TestBackend.Interactor;
+using AutoMapper;
+using TestBackend.Configrations;
+using TestBackend.Configrations.Configurations;
+// using AutoMapper.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +53,12 @@ builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWrit
 
 // Usecaseなど
 builder.Services.AddScoped<IUserUsecase, UserReadInteractor>();
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<AutoMapperUserProfile>();
+});
+
 
 var app = builder.Build();
 

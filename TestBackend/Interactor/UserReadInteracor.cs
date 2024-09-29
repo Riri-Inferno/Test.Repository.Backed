@@ -2,27 +2,38 @@ using TestBackend.Interfaces;
 using TestBackend.Usecases;
 using TestBackend.Interactor.Dtos;
 using TestBackend.Models.Entities;
+using Azure;
+using TestBackend.Configrations.Configurations;
+using AutoMapper;
 
 public class UserReadInteractor : IUserUsecase
 {
     private readonly IGenericReadRepository<User> _userRepository;
+    private readonly IMapper _mapper;
 
-    public UserReadInteractor(IGenericReadRepository<User> userRepository)
+    public UserReadInteractor(
+        IGenericReadRepository<User> userRepository,
+        IMapper mapper
+        )
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
+
+
+    
 
     /// <summary>
     /// Userレコード取得クエリ
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<UserReadResponse> hoge(int id)
+    public async Task<UserReadResponse> ExcuteAsync(int id)
     {
         // データベースからユーザーを取得するロジック
         var user = await _userRepository.GetByIdAsync(id);
 
-
+        // Degug用
         Console.WriteLine("ooaoaoaoaoaooaoaoooaooooaooaooaooa");
         Console.WriteLine(user);
         
@@ -32,12 +43,8 @@ public class UserReadInteractor : IUserUsecase
             return null; // または適切なエラーハンドリングを行う
         }
 
-        // レスポンスを生成
-        return new UserReadResponse
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email
-        };
+        var response = _mapper.Map<UserReadResponse>(user);
+
+        return response;
     }
 }
