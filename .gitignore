@@ -66,3 +66,4 @@ secrets.json
 
 # クレデンシャル
 *credentials.json
+*appsettings.Development.json
