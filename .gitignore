@@ -63,3 +63,6 @@ secrets.json
 *.jfm
 *.pfx
 *.publishsettings
+
+# クレデンシャル
+*credentials.json
