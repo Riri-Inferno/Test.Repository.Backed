@@ -1,5 +1,8 @@
 namespace TestBackend.Models.Entities
 {
+    /// <summary>
+    /// ユーザ情報エンティティ
+    /// </summary>
     public class User
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace TestBackend.Models.Entities
         public string Name { get; set; }
 
         /// <summary>
-        /// ユーザーメアド
+        /// メールアドレス
         /// </summary>
         public string Email { get; set; }
     }
