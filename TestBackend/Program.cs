@@ -6,6 +6,7 @@ using TestBackend.Models;
 using Microsoft.Extensions.Configuration;
 using TestBackend.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
