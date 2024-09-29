@@ -3,10 +3,36 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using TestBackend.Controllers;
 using TestBackend.Models;
+using Microsoft.Extensions.Configuration;
+using TestBackend.Data;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// credentials.json から設定を読み込む
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("credentials.json", optional: false, reloadOnChange: true);
+
+// appsettings.json も読み込む
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+
+// credentials.json から接続情報を取得
+var endpoint = builder.Configuration["endpoint"];
+var user = builder.Configuration["user"];
+var password = builder.Configuration["password"];
+
+// PostgreSQL用の接続文字列を生成
+var connectionString = $"Host={endpoint};Port=5432;Database=postgres;Username={user};Password={password}";
+
+// 接続文字列を使用してサービスに PostgreSQL コンテキストを登録
+builder.Services.AddDbContext<MyDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+// Swaggerとエンドポイントの設定
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
