@@ -1,6 +1,8 @@
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using TestBackend.Controllers;
+using TestBackend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,11 +55,4 @@ app.Run();
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
-
-// GraphQLクエリのクラスを定義
-// 仮クエリ
-public class Query
-{
-    public string Hello() => "Hello, GraphQL!";
 }
