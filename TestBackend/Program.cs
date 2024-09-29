@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using TestBackend.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
+using TestBackend.Interfaces;
+using TestBackend.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,53 +34,20 @@ var connectionString = $"Host={endpoint};Port=5432;Database=postgres;Username={u
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Swaggerとエンドポイントの設定
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // GraphQLサーバーのサービスを追加
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>(); // Queryクラスを追加
 
+// 追加するリポジトリの登録
+builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
+builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWriteRepository<>));
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+// HTTPSリダイレクトの設定
 app.UseHttpsRedirection();
-
-// WeatherForecastのエンドポイント
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
 
 // GraphQLエンドポイントを設定
 app.MapGraphQL(); // /graphql エンドポイントが作成される
 
 app.Run();
-
-// WeatherForecastのレコードを定義
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
