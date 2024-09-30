@@ -43,9 +43,6 @@ var connectionString = $"Host={endpoint};Port=5432;Database=postgres;Username={u
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// GraphQLサーバーのサービスを追加
-// builder.Services.AddGraphQLServer()
-//     .AddQueryType<Query>();
 
 //Todo:エラーページのミドルウェアを追加する。以下のように追加
 // app.UseDeveloperExceptionPage();
@@ -53,9 +50,8 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<Query>();
-    // .AddQueryType<UserReadResponse>();
-    // .AddType<UserReadResponseType>();
+    .AddQueryType<Query>()
+    .AddType<UserReadResponse>();
 
 
 
