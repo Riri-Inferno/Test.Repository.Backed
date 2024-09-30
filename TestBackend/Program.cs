@@ -9,6 +9,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Interfaces;
 using TestBackend.Repositories;
+using TestBackend.Usecases;
+using TestBackend.Interactor;
+using AutoMapper;
+using TestBackend.Configrations;
+using TestBackend.Configrations.Configurations;
+using TestBackend.Interactor.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,13 +41,45 @@ var connectionString = $"Host={endpoint};Port=5432;Database=postgres;Username={u
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// GraphQLサーバーのサービスを追加
-builder.Services.AddGraphQLServer()
-    .AddQueryType<Query>(); // Queryクラスを追加
+
+//Todo:エラーページのミドルウェアを追加する。以下のように追加
+// app.UseDeveloperExceptionPage();
+
+
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddType<UserReadResponse>();
+
+
+
+
+
+// ??????
+// builder.Services
+//     .AddGraphQLServer()
+//     .AddMutationType<Query>();
+
+    
+// builder.Services.AddGraphQLServer()
+//     .AddQueryType<Query>() // Query型
+    // .AddMutationType<MutationUp>() // Mutation型
+    // .ModifyRequestOptions(opts => opts.IncludeExceptionDetails = true);
+
 
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
 builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWriteRepository<>));
+
+// Usecaseなど
+builder.Services.AddScoped<IUserUsecase, UserReadInteractor>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<AutoMapperUserProfile>();
+});
+
 
 var app = builder.Build();
 
@@ -48,6 +87,6 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 // GraphQLエンドポイントを設定
-app.MapGraphQL(); // /graphql エンドポイントが作成される
+app.MapGraphQL();
 
 app.Run();
