@@ -43,29 +43,15 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 
 
 //Todo:エラーページのミドルウェアを追加する。以下のように追加
-// app.UseDeveloperExceptionPage();
+// エラーページのミドルウェアを追加
+// app.UseDeveloperExceptionPage(); // 開発環境での詳細なエラーページ
 
 
+// Queryのスキーマ登録
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
     .AddType<UserReadResponse>();
-
-
-
-
-
-// ??????
-// builder.Services
-//     .AddGraphQLServer()
-//     .AddMutationType<Query>();
-
-    
-// builder.Services.AddGraphQLServer()
-//     .AddQueryType<Query>() // Query型
-    // .AddMutationType<MutationUp>() // Mutation型
-    // .ModifyRequestOptions(opts => opts.IncludeExceptionDetails = true);
-
 
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
@@ -80,8 +66,10 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<AutoMapperUserProfile>();
 });
 
-
 var app = builder.Build();
+
+// エラーページのミドルウェア
+app.UseDeveloperExceptionPage();
 
 // HTTPSリダイレクトの設定
 app.UseHttpsRedirection();
