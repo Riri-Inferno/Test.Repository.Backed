@@ -8,11 +8,11 @@ namespace TestBackend.Controllers;
 
 public class Query
 {
-    private readonly IUserUsecase _userReadUsecase;
+    private readonly IUserReadUsecase _userReadUsecase;
 
     public Query
     (
-        IUserUsecase userReadUsecase
+        IUserReadUsecase userReadUsecase
     )
     {
         _userReadUsecase = userReadUsecase;

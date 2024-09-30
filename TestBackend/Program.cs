@@ -58,7 +58,7 @@ builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadR
 builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWriteRepository<>));
 
 // Usecaseなど
-builder.Services.AddScoped<IUserUsecase, UserReadInteractor>();
+builder.Services.AddScoped<IUserReadUsecase, UserReadInteractor>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(cfg =>

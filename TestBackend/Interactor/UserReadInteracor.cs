@@ -6,7 +6,7 @@ using Azure;
 using TestBackend.Configrations.Configurations;
 using AutoMapper;
 
-public class UserReadInteractor : IUserUsecase
+public class UserReadInteractor : IUserReadUsecase
 {
     private readonly IGenericReadRepository<User> _userRepository;
     private readonly IMapper _mapper;
