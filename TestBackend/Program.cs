@@ -15,9 +15,7 @@ using AutoMapper;
 using TestBackend.Configrations;
 using TestBackend.Configrations.Configurations;
 using TestBackend.Interactor.Dtos;
-using TestBackend.ObjectType;
 using Microsoft.AspNetCore.Mvc;
-// using AutoMapper.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
