@@ -6,11 +6,14 @@ using TestBackend.Usecases;
 
 namespace TestBackend.Controllers;
 
-public class Query: ControllerBase
+public class Query
 {
     private readonly IUserUsecase _userReadUsecase;
 
-    public Query(IUserUsecase userReadUsecase)
+    public Query
+    (
+        IUserUsecase userReadUsecase
+    )
     {
         _userReadUsecase = userReadUsecase;
     }
@@ -29,6 +32,6 @@ public class Query: ControllerBase
     {
         var response = await _userReadUsecase.ExcuteAsync(id);
 
-        return response; // レスポンスを返す
+        return response;
     }
 }
