@@ -1,6 +1,5 @@
 using TestBackend.Interactor.Dtos;
 
-
 namespace TestBackend.Usecases;
 public interface IUserReadUsecase
 {

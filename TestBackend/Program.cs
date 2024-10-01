@@ -16,6 +16,8 @@ using TestBackend.Configrations;
 using TestBackend.Configrations.Configurations;
 using TestBackend.Interactor.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using TestBackend.Models.Entities;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,13 +41,14 @@ var connectionString = $"Host={endpoint};Port=5432;Database=postgres;Username={u
 
 // 接続文字列を使用してサービスに PostgreSQL コンテキストを登録
 builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString),
+    ServiceLifetime.Scoped);
+
 
 
 //Todo:エラーページのミドルウェアを追加する。以下のように追加
 // エラーページのミドルウェアを追加
 // app.UseDeveloperExceptionPage(); // 開発環境での詳細なエラーページ
-
 
 // Queryのスキーマ登録
 builder.Services
@@ -60,6 +63,10 @@ builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWrit
 // Usecaseなど
 builder.Services.AddScoped<IUserReadUsecase, UserReadInteractor>();
 
+// DBcontext?
+// builder.Services.AddScoped<IGenericReadRepository<User>, GenericReadRepository<User>>();
+// builder.Services.AddDbContext<User>(opt => opt.UseNpgsql(MyDbContext));
+
 // AutoMapper
 builder.Services.AddAutoMapper(cfg =>
 {
@@ -67,9 +74,6 @@ builder.Services.AddAutoMapper(cfg =>
 });
 
 var app = builder.Build();
-
-// エラーページのミドルウェア
-app.UseDeveloperExceptionPage();
 
 // HTTPSリダイレクトの設定
 app.UseHttpsRedirection();

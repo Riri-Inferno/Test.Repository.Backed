@@ -5,6 +5,10 @@ using TestBackend.Models.Entities;
 using Azure;
 using TestBackend.Configrations.Configurations;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using TestBackend.Data;
+
+namespace TestBackend.Interactor;
 
 public class UserReadInteractor : IUserReadUsecase
 {

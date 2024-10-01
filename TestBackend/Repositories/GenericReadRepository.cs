@@ -16,7 +16,7 @@ namespace TestBackend.Repositories
         public GenericReadRepository(MyDbContext context)
         {
             _context = context;
-            _dbSet = context.Set<T>();
+            _dbSet = _context.Set<T>();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
