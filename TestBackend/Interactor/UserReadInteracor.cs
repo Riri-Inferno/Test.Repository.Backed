@@ -5,8 +5,12 @@ using TestBackend.Models.Entities;
 using Azure;
 using TestBackend.Configrations.Configurations;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using TestBackend.Data;
 
-public class UserReadInteractor : IUserUsecase
+namespace TestBackend.Interactor;
+
+public class UserReadInteractor : IUserReadUsecase
 {
     private readonly IGenericReadRepository<User> _userRepository;
     private readonly IMapper _mapper;
@@ -20,9 +24,6 @@ public class UserReadInteractor : IUserUsecase
         _mapper = mapper;
     }
 
-
-    
-
     /// <summary>
     /// Userレコード取得クエリ
     /// </summary>
@@ -32,15 +33,11 @@ public class UserReadInteractor : IUserUsecase
     {
         // データベースからユーザーを取得するロジック
         var user = await _userRepository.GetByIdAsync(id);
-
-        // Degug用
-        Console.WriteLine("ooaoaoaoaoaooaoaoooaooooaooaooaooa");
-        Console.WriteLine(user);
         
-        // ユーザーが見つからない場合はnullを返す
+        // ユーザーが見つからない場合はエラーを投げる
         if (user == null)
         {
-            return null; // または適切なエラーハンドリングを行う
+            throw new KeyNotFoundException($"User with ID {id} not found.");
         }
 
         var response = _mapper.Map<UserReadResponse>(user);

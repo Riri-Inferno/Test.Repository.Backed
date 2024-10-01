@@ -16,6 +16,8 @@ using TestBackend.Configrations;
 using TestBackend.Configrations.Configurations;
 using TestBackend.Interactor.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using TestBackend.Models.Entities;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,47 +41,37 @@ var connectionString = $"Host={endpoint};Port=5432;Database=postgres;Username={u
 
 // 接続文字列を使用してサービスに PostgreSQL コンテキストを登録
 builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString),
+    ServiceLifetime.Scoped);
+
 
 
 //Todo:エラーページのミドルウェアを追加する。以下のように追加
-// app.UseDeveloperExceptionPage();
+// エラーページのミドルウェアを追加
+// app.UseDeveloperExceptionPage(); // 開発環境での詳細なエラーページ
 
-
+// Queryのスキーマ登録
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
     .AddType<UserReadResponse>();
-
-
-
-
-
-// ??????
-// builder.Services
-//     .AddGraphQLServer()
-//     .AddMutationType<Query>();
-
-    
-// builder.Services.AddGraphQLServer()
-//     .AddQueryType<Query>() // Query型
-    // .AddMutationType<MutationUp>() // Mutation型
-    // .ModifyRequestOptions(opts => opts.IncludeExceptionDetails = true);
-
 
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
 builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWriteRepository<>));
 
 // Usecaseなど
-builder.Services.AddScoped<IUserUsecase, UserReadInteractor>();
+builder.Services.AddScoped<IUserReadUsecase, UserReadInteractor>();
+
+// DBcontext?
+// builder.Services.AddScoped<IGenericReadRepository<User>, GenericReadRepository<User>>();
+// builder.Services.AddDbContext<User>(opt => opt.UseNpgsql(MyDbContext));
 
 // AutoMapper
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<AutoMapperUserProfile>();
 });
-
 
 var app = builder.Build();
 
