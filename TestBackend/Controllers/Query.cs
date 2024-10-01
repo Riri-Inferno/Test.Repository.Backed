@@ -1,8 +1,5 @@
-using System.Runtime.CompilerServices;
 using TestBackend.Interactor.Dtos;
-using Microsoft.AspNetCore.Mvc;
 using TestBackend.Usecases;
-
 
 namespace TestBackend.Controllers;
 
@@ -28,9 +25,9 @@ public class Query
     /// Userレコード取得クエリ
     /// </summary>
     /// <returns></returns>
-    public async Task<UserReadResponse> GetUserAsync(int id)
+    public async Task<UserReadResponse> GetUserAsync(int id, [Service]IUserReadUsecase userReadUsecase)
     {
-        var response = await _userReadUsecase.ExcuteAsync(id);
+        var response = await userReadUsecase.ExcuteAsync(id);
 
         return response;
     }
