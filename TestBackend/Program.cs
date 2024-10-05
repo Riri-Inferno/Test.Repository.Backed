@@ -54,7 +54,7 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddType<UserReadResponse>();
+    .AddType<ReadUserResponse>();
 
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));

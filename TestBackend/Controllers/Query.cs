@@ -14,18 +14,12 @@ public class Query
     {
         _userReadUsecase = userReadUsecase;
     }
-    
-    /// <summary>
-    /// 動作確認用のクエリ
-    /// </summary>
-    /// <returns></returns>
-    public string Hello() => "Hello, GraphQL!!";
 
     /// <summary>
     /// Userレコード取得クエリ
     /// </summary>
     /// <returns></returns>
-    public async Task<UserReadResponse> GetUserAsync(int id, [Service]IUserReadUsecase userReadUsecase)
+    public async Task<ReadUserResponse> GetUserAsync(int id, [Service]IUserReadUsecase userReadUsecase)
     {
         var response = await userReadUsecase.ExcuteAsync(id);
 

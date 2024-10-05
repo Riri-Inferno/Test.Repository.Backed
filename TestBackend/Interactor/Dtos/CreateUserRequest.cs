@@ -1,19 +1,21 @@
 namespace TestBackend.Interactor.Dtos;
 
-public class ReadUserResponse
+public class CreateUserRequest
 {
     /// <summary>
     /// ユーザーID
     /// </summary>
-    public int Id{get;set;}
+    public int Id { get; set; }
 
     /// <summary>
     /// ユーザー名
     /// </summary>
-    public string Name{get;set;}
+    public string Name { get; set; }
+
 
     /// <summary>
     /// メールアドレス
     /// </summary>
-    public string Email{get;set;}
+    public string Email { get; set; }
+
 }

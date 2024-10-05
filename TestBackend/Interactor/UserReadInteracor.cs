@@ -29,7 +29,7 @@ public class UserReadInteractor : IUserReadUsecase
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<UserReadResponse> ExcuteAsync(int id)
+    public async Task<ReadUserResponse> ExcuteAsync(int id)
     {
         // データベースからユーザーを取得するロジック
         var user = await _userRepository.GetByIdAsync(id);
@@ -40,7 +40,7 @@ public class UserReadInteractor : IUserReadUsecase
             throw new KeyNotFoundException($"User with ID {id} not found.");
         }
 
-        var response = _mapper.Map<UserReadResponse>(user);
+        var response = _mapper.Map<ReadUserResponse>(user);
 
         return response;
     }
