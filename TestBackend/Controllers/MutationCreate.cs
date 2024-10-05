@@ -22,13 +22,13 @@ public class MutationCreate
     /// <param name="request">ユーザー作成リクエスト</param>
     /// <param name="createUserUsecase">ユーザー作成ユースケース</param>
     /// <returns>作成したユーザーレコード</returns>
-    public async Task<IActionResult<ReadUserResponse>> CreateUserAsync
+    public async Task<ReadUserResponse> CreateUserAsync
     (
         CreateUserRequest request,
         [Service]ICreateUserUsecase createUserUsecase
     )
     {
-        await createUserUsecase.ExcuteAsync(request);
-        return Created;
+        var response = await createUserUsecase.ExcuteAsync(request);
+        return response;
     }
 }

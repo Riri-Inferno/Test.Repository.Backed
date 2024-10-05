@@ -7,5 +7,6 @@ namespace TestBackend.Interfaces
         Task AddAsync(T entity); // 新規追加
         Task UpdateAsync(T entity); // 更新
         Task DeleteAsync(int id); // 削除
+        Task SaveChangesAsync(); // 変更を保存
     }
 }

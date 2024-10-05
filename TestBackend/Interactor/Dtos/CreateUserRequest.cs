@@ -12,7 +12,6 @@ public class CreateUserRequest
     /// </summary>
     public string Name { get; set; }
 
-
     /// <summary>
     /// メールアドレス
     /// </summary>

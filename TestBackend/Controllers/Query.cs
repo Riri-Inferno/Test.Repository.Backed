@@ -17,12 +17,16 @@ public class Query
 
     /// <summary>
     /// Userレコード取得クエリ
-    /// </summary>
-    /// <returns></returns>
-    public async Task<ReadUserResponse> GetUserAsync(int id, [Service]IUserReadUsecase userReadUsecase)
+    /// <param name="id">ユーザーID</param>
+    /// <param name="userReadUsecase">ユーザー情報取得ユースケース</param>
+    /// <returns>取得したユーザーレコード</returns>
+    public async Task<ReadUserResponse> GetUserAsync
+    (
+        int id,
+        [Service]IUserReadUsecase userReadUsecase
+    )
     {
         var response = await userReadUsecase.ExcuteAsync(id);
-
         return response;
     }
 }

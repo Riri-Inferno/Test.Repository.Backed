@@ -8,10 +8,8 @@ namespace TestBackend.Configrations.Configurations
     {
         public AutoMapperUserProfile()
         {
-            // エンティティからDTOへのマッピング
-            CreateMap<User,ReadUserResponse>();
-            // DTOからエンティティへのマッピング
-            CreateMap<ReadUserResponse, User>();
+            CreateMap<User, ReadUserResponse>().ReverseMap();
+            CreateMap<User, CreateUserRequest>().ReverseMap();
         }
     }
 }
