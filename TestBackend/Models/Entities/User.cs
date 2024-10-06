@@ -16,7 +16,8 @@ namespace TestBackend.Models.Entities
         /// <summary>
         /// ユーザー名
         /// </summary>
-        public string Name { get; set; }
+        [Required]
+        public string UserName { get; set; }
 
         /// <summary>
         /// メールアドレス
@@ -24,6 +25,6 @@ namespace TestBackend.Models.Entities
         /// [Required]
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string UserEmail { get; set; }
     }
 }

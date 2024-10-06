@@ -1,4 +1,3 @@
-// GenericWriteRepository.cs
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Interfaces;
@@ -37,6 +36,11 @@ namespace TestBackend.Repositories
                 _dbSet.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

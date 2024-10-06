@@ -50,11 +50,13 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 // エラーページのミドルウェアを追加
 // app.UseDeveloperExceptionPage(); // 開発環境での詳細なエラーページ
 
-// Queryのスキーマ登録
+// QueryとMutationのスキーマ登録
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddType<UserReadResponse>();
+    .AddMutationType<MutationCreate>()
+    .AddType<ReadUserResponse>()
+    .AddType<CreateUserRequest>();
 
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
@@ -62,6 +64,7 @@ builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWrit
 
 // Usecaseなど
 builder.Services.AddScoped<IUserReadUsecase, UserReadInteractor>();
+builder.Services.AddScoped<ICreateUserUsecase, CreateUserInteractor>();
 
 // DBcontext?
 // builder.Services.AddScoped<IGenericReadRepository<User>, GenericReadRepository<User>>();

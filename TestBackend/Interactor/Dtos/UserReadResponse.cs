@@ -1,6 +1,6 @@
 namespace TestBackend.Interactor.Dtos;
 
-public class UserReadResponse
+public class ReadUserResponse
 {
     /// <summary>
     /// ユーザーID
@@ -10,10 +10,10 @@ public class UserReadResponse
     /// <summary>
     /// ユーザー名
     /// </summary>
-    public string Name{get;set;}
+    public string UserName{get;set;}
 
     /// <summary>
     /// メールアドレス
     /// </summary>
-    public string Email{get;set;}
+    public string UserEmail{get;set;}
 }

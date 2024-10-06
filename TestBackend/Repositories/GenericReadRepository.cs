@@ -1,6 +1,7 @@
-// GenericReadRepository.cs
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Interfaces;
@@ -29,9 +30,16 @@ namespace TestBackend.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> FindAsync(Func<T, bool> predicate)
+        // 修正：Func<T, bool> から Expression<Func<T, bool>> に変更
+        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return await Task.FromResult(_dbSet.AsEnumerable().Where(predicate));
+            return await _dbSet.Where(predicate).ToListAsync();
+        }
+
+        // 存在確認用の ExistsAsync メソッドを追加
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
         }
     }
 }
