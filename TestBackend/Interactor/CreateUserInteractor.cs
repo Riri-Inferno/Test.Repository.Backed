@@ -4,6 +4,7 @@ using TestBackend.Interactor.Dtos;
 using TestBackend.Models.Entities;
 using AutoMapper;
 using System.Data;
+using System.Transactions;
 
 namespace TestBackend.Interactor;
 
@@ -30,35 +31,53 @@ public class CreateUserInteractor : ICreateUserUsecase
     /// <returns>作成したユーザーレコード</returns>
     public async Task<ReadUserResponse> ExcuteAsync(CreateUserRequest request)
     {
-        var mappedRequest = _mapper.Map<User>(request);
-
-        // ユーザー名またはメールアドレスが既に存在するか確認
-        var users = await _readUserRepository
-            .FindAsync(e => e.UserName == request.UserName || e.UserEmail == request.UserEmail);
-
-        var existingUser = users.FirstOrDefault();
-
-        if (existingUser != null)
+        using (var scope = new TransactionScope(
+                TransactionScopeOption.Required,
+                new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.Serializable },
+                TransactionScopeAsyncFlowOption.Enabled))
         {
-            if (existingUser.UserName == request.UserName && existingUser.UserEmail == request.UserEmail)
+            try
             {
-                throw new DuplicateNameException("このユーザー名とEmailアドレスはすでに登録されています");
+                var mappedRequest = _mapper.Map<User>(request);
+
+                // ユーザー名またはメールアドレスが既に存在するか確認
+                var users = await _readUserRepository
+                    .FindAsync(e => e.UserName == request.UserName || e.UserEmail == request.UserEmail);
+
+                var existingUser = users.FirstOrDefault();
+
+                if (existingUser != null)
+                {
+                    if (existingUser.UserName == request.UserName && existingUser.UserEmail == request.UserEmail)
+                    {
+                        throw new DuplicateNameException("このユーザー名とEmailアドレスはすでに登録されています");
+                    }
+                    else if (existingUser.UserName == request.UserName)
+                    {
+                        throw new DuplicateNameException("このユーザー名はすでに登録されています");
+                    }
+                    else if (existingUser.UserEmail == request.UserEmail)
+                    {
+                        throw new DuplicateNameException("このEmailアドレスはすでに登録されています");
+                    }
+                }
+
+                await _writeUserRepository.AddAsync(mappedRequest);
+                await _writeUserRepository.SaveChangesAsync();
+
+                // 作成されたユーザーのレスポンスを返す
+                var response = _mapper.Map<ReadUserResponse>(mappedRequest);
+
+                // トランザクションをコミット
+                scope.Complete();
+                
+                return response;
             }
-            else if (existingUser.UserName == request.UserName)
+            catch (Exception ex)
             {
-                throw new DuplicateNameException("このユーザー名はすでに登録されています");
-            }
-            else if (existingUser.UserEmail == request.UserEmail)
-            {
-                throw new DuplicateNameException("このEmailアドレスはすでに登録されています");
+                Console.WriteLine("ユーザーの作成中にエラーが発生しました。");
+                throw new Exception("ユーザーの作成中にエラーが発生しました。", ex);
             }
         }
-
-        await _writeUserRepository.AddAsync(mappedRequest);
-        await _writeUserRepository.SaveChangesAsync();
-
-        // 作成されたユーザーのレスポンスを返す
-        var response = _mapper.Map<ReadUserResponse>(mappedRequest);
-        return response;
     }
 }
