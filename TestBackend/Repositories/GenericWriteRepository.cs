@@ -27,7 +27,6 @@ namespace TestBackend.Repositories
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
 
-            // 更新されたエンティティを返す
             return entity;
         }
 
@@ -39,6 +38,23 @@ namespace TestBackend.Repositories
                 _dbSet.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<T> UpsertAsync(T entity, int id)
+        {
+            var existingEntity = await _dbSet.FindAsync(id);
+
+            if (existingEntity == null)
+            {
+                await _dbSet.AddAsync(entity);
+            }
+            else
+            {
+                _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            }
+
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task SaveChangesAsync()

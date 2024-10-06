@@ -82,6 +82,7 @@ builder.Services.AddScoped<IUserReadUsecase, UserReadInteractor>();
 builder.Services.AddScoped<ICreateUserUsecase, CreateUserInteractor>();
 builder.Services.AddScoped<IDeleteUserUsecase, DeleteUserInteractor>();
 builder.Services.AddScoped<IUpdateUserUsecase, UpdateUserInteractor>();
+builder.Services.AddScoped<IUpsertUserUsecase, UpsertUserInteractor>();
 
 // DBcontext?
 // builder.Services.AddScoped<IGenericReadRepository<User>, GenericReadRepository<User>>();
