@@ -1,5 +1,9 @@
 # Test.Repository.Backed
 個人開発テスト用リポジトリ
+dotnet8
+EFcore
+ASP
+GraphQLAPI
 ```
 /プロジェクト名
 ├── /Controllers          // コントローラー
