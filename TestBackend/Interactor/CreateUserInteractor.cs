@@ -33,30 +33,32 @@ public class CreateUserInteractor : ICreateUserUsecase
         var mappedRequest = _mapper.Map<User>(request);
 
         // ユーザー名またはメールアドレスが既に存在するか確認
-        var existingUser = await _readUserRepository.FindAsync(
-            e => e.UserName == request.Name || e.UserEmail == request.Email);
+        var users = await _readUserRepository
+            .FindAsync(e => e.UserName == request.UserName || e.UserEmail == request.UserEmail);
 
-        // if (existingUser != null)
-        // {
-        //     if (existingUser.UserName == request.Name && existingUser.Email == request.Email)
-        //     {
-        //         throw new DuplicateNameException("このユーザー名とEmailアドレスはすでに登録されています");
-        //     }
-        //     else if (existingUser.Name == request.Name)
-        //     {
-        //         throw new DuplicateNameException("このユーザー名はすでに登録されています");
-        //     }
-        //     else if (existingUser.Email == request.Email)
-        //     {
-        //         throw new DuplicateNameException("このEmailアドレスはすでに登録されています");
-        //     }
-        // }
+        var existingUser = users.FirstOrDefault();
+
+        if (existingUser != null)
+        {
+            if (existingUser.UserName == request.UserName && existingUser.UserEmail == request.UserEmail)
+            {
+                throw new DuplicateNameException("このユーザー名とEmailアドレスはすでに登録されています");
+            }
+            else if (existingUser.UserName == request.UserName)
+            {
+                throw new DuplicateNameException("このユーザー名はすでに登録されています");
+            }
+            else if (existingUser.UserEmail == request.UserEmail)
+            {
+                throw new DuplicateNameException("このEmailアドレスはすでに登録されています");
+            }
+        }
 
         await _writeUserRepository.AddAsync(mappedRequest);
         await _writeUserRepository.SaveChangesAsync();
 
-        var createdUser = await _readUserRepository.GetByIdAsync(1);
-        var response = _mapper.Map<ReadUserResponse>(createdUser);
+        // 作成されたユーザーのレスポンスを返す
+        var response = _mapper.Map<ReadUserResponse>(mappedRequest);
         return response;
     }
 }

@@ -8,10 +8,10 @@ public class CreateUserRequest
     /// <summary>
     /// ユーザー名
     /// </summary>
-    public string Name { get; set; }
+    public string UserName { get; set; }
 
     /// <summary>
     /// メールアドレス
     /// </summary>
-    public string Email { get; set; }
+    public string UserEmail { get; set; }
 }
