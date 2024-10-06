@@ -29,7 +29,7 @@ public class DeleteUserInteractor : IDeleteUserUsecase
     /// </summary>
     /// <param name="id">ユーザーID</param>
     /// <returns>削除したユーザーレコード</returns>
-    public async Task<string> ExcuteAsync(int id)
+    public async Task<bool> ExcuteAsync(int id)
     {
         using (var scope = new TransactionScope(
                 TransactionScopeOption.Required,
@@ -43,7 +43,7 @@ public class DeleteUserInteractor : IDeleteUserUsecase
                 await _writeUserRepository.SaveChangesAsync();
                 // トランザクションをコミット
                 scope.Complete();
-                return "死ね";
+                return true;
             }
             catch (Exception ex)
             {
