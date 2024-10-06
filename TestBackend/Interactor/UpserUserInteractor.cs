@@ -38,24 +38,45 @@ public class UpsertUserInteractor : IUpsertUserUsecase
         {
             try
             {
+                var mappedRequest = _mapper.Map<User>(request);
+                // ユーザー名またはメールアドレスが既に存在するか確認
+                var users = await _readUserRepository
+                    .FindAsync(e => e.UserName == request.UserName || e.UserEmail == request.UserEmail);
 
-                var existingUser = await _readUserRepository.GetByIdAsync(request.Id);
+                var existingUser = users.FirstOrDefault();
 
-                var user = _mapper.Map(request, existingUser);
+                // ユーザーが存在するときに更新
+                if (existingUser != null)
+                {
+                    // 更新用エンティティ
+                    var user = _mapper.Map(request, existingUser);
 
-                var response = await _writeUserRepository.UpsertAsync(user,request.Id);
+                    var response = await _writeUserRepository.UpdateAsync(user);
+                    await _writeUserRepository.SaveChangesAsync();
 
-                await _writeUserRepository.SaveChangesAsync();
+                    scope.Complete();
+                    
+                    return  _mapper.Map<ReadUserResponse>(response);
+                }
+                // ユーザーが存在しなかったら追加
+                else
+                {
+                    await _writeUserRepository.AddAsync(mappedRequest);
+                    await _writeUserRepository.SaveChangesAsync();
 
-                scope.Complete();
-                
-                return  _mapper.Map<ReadUserResponse>(response);
+                    // 作成されたユーザーのレスポンスを返す
+                    var response = _mapper.Map<ReadUserResponse>(mappedRequest);
 
+                    // トランザクションをコミット
+                    scope.Complete();
+                    
+                    return response;
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ユーザーの更新中にエラーが発生しました。");
-                throw new Exception("ユーザーの更新中にエラーが発生しました。", ex);
+                Console.WriteLine("ユーザーのUpsert処理中ににエラーが発生しました。");
+                throw new Exception("ユーザーのUpsert処理中にエラーが発生しました。", ex);
             }
         }
     }
