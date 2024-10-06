@@ -18,6 +18,13 @@ using TestBackend.Interactor.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using TestBackend.Models.Entities;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using HotChocolate;
+using HotChocolate.Types;
+using HotChocolate.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,19 +51,27 @@ builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseNpgsql(connectionString),
     ServiceLifetime.Scoped);
 
-
-
 //Todo:エラーページのミドルウェアを追加する。以下のように追加
 // エラーページのミドルウェアを追加
 // app.UseDeveloperExceptionPage(); // 開発環境での詳細なエラーページ
 
-// QueryとMutationのスキーマ登録
-builder.Services
-    .AddGraphQLServer()
-    .AddQueryType<Query>()
-    .AddMutationType<MutationCreate>()
-    .AddType<ReadUserResponse>()
-    .AddType<CreateUserRequest>();
+builder.Services.AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>()
+                // .AddErrorFilter<CustomExceptionFilter>()
+                // .AddProjections()
+                // .AddSorting()
+                // .AddFiltering()
+                .AddAuthorization();
+
+
+// builder.Services
+//     .AddGraphQLServer()
+//     .AddMutationType(m => m.Name("Mutation"))
+//     .AddTypeExtension<MutationCreate>()
+//     .AddTypeExtension<MutationDelete>();
+
+
 
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
@@ -65,6 +80,7 @@ builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWrit
 // Usecaseなど
 builder.Services.AddScoped<IUserReadUsecase, UserReadInteractor>();
 builder.Services.AddScoped<ICreateUserUsecase, CreateUserInteractor>();
+builder.Services.AddScoped<IDeleteUserUsecase, DeleteUserInteractor>();
 
 // DBcontext?
 // builder.Services.AddScoped<IGenericReadRepository<User>, GenericReadRepository<User>>();

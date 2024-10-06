@@ -5,17 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TestBackend.Controllers;
 
-public class MutationCreate
+public partial class Mutation
 {
-    private readonly ICreateUserUsecase _createUserUsecase;
-    public MutationCreate
-    (
-        ICreateUserUsecase createUserUsecase
-    )
-    {
-        _createUserUsecase = createUserUsecase;
-    }
-
     /// <summary>
     /// ユーザー作成
     /// </summary>
