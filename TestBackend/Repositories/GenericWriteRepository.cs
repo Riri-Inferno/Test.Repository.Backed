@@ -22,10 +22,13 @@ namespace TestBackend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
+
+            // 更新されたエンティティを返す
+            return entity;
         }
 
         public async Task DeleteAsync(int id)

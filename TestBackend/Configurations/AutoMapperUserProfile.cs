@@ -10,6 +10,7 @@ namespace TestBackend.Configrations.Configurations
         {
             CreateMap<User, ReadUserResponse>().ReverseMap();
             CreateMap<User, CreateUserRequest>().ReverseMap();
+            CreateMap<User, UpdateUserRequest>().ReverseMap();
         }
     }
 }
