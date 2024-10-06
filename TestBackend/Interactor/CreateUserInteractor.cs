@@ -3,23 +3,24 @@ using TestBackend.Usecases;
 using TestBackend.Interactor.Dtos;
 using TestBackend.Models.Entities;
 using AutoMapper;
+using System.Data;
 
 namespace TestBackend.Interactor;
 
 public class CreateUserInteractor : ICreateUserUsecase
 {
-    private readonly IGenericReadRepository<User> _userReadRepository;
-    private readonly IGenericWriteRepository<User> _userWriteRepository;
+    private readonly IGenericReadRepository<User> _readUserRepository;
+    private readonly IGenericWriteRepository<User> _writeUserRepository;
     private readonly IMapper _mapper;
 
     public CreateUserInteractor(
-        IGenericReadRepository<User> userReadRepository,
-        IGenericWriteRepository<User> userWriteRepository,
+        IGenericReadRepository<User> readUserRepository,
+        IGenericWriteRepository<User> writeUserRepository,
         IMapper mapper
     )
     {
-        _userReadRepository = userReadRepository;
-        _userWriteRepository = userWriteRepository;
+        _readUserRepository = readUserRepository;
+        _writeUserRepository = writeUserRepository;
         _mapper = mapper;
     }
     /// <summary>
@@ -29,14 +30,33 @@ public class CreateUserInteractor : ICreateUserUsecase
     /// <returns>作成したユーザーレコード</returns>
     public async Task<ReadUserResponse> ExcuteAsync(CreateUserRequest request)
     {
-        var CreateUser = _mapper.Map<User>(request);
+        var mappedRequest = _mapper.Map<User>(request);
 
-        await _userWriteRepository.AddAsync(CreateUser);
-        await _userWriteRepository.SaveChangesAsync();
+        // ユーザー名またはメールアドレスが既に存在するか確認
+        var existingUser = await _readUserRepository.FindAsync(
+            e => e.UserName == request.Name || e.UserEmail == request.Email);
 
-        var createdUser = await _userReadRepository.GetByIdAsync(request.Id);
+        // if (existingUser != null)
+        // {
+        //     if (existingUser.UserName == request.Name && existingUser.Email == request.Email)
+        //     {
+        //         throw new DuplicateNameException("このユーザー名とEmailアドレスはすでに登録されています");
+        //     }
+        //     else if (existingUser.Name == request.Name)
+        //     {
+        //         throw new DuplicateNameException("このユーザー名はすでに登録されています");
+        //     }
+        //     else if (existingUser.Email == request.Email)
+        //     {
+        //         throw new DuplicateNameException("このEmailアドレスはすでに登録されています");
+        //     }
+        // }
+
+        await _writeUserRepository.AddAsync(mappedRequest);
+        await _writeUserRepository.SaveChangesAsync();
+
+        var createdUser = await _readUserRepository.GetByIdAsync(1);
         var response = _mapper.Map<ReadUserResponse>(createdUser);
-
         return response;
     }
 }

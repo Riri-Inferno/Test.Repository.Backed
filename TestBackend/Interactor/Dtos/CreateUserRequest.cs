@@ -1,12 +1,10 @@
 namespace TestBackend.Interactor.Dtos;
 
+/// <summary>
+/// ユーザー追加のリクエスト
+/// </summary>
 public class CreateUserRequest
 {
-    /// <summary>
-    /// ユーザーID
-    /// </summary>
-    public int Id { get; set; }
-
     /// <summary>
     /// ユーザー名
     /// </summary>
@@ -16,5 +14,4 @@ public class CreateUserRequest
     /// メールアドレス
     /// </summary>
     public string Email { get; set; }
-
 }
