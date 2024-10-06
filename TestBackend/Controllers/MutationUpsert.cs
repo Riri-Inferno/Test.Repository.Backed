@@ -3,13 +3,7 @@ using TestBackend.Usecases;
 
 namespace TestBackend.Controllers;
 
-public class MutationUpsert
+public partial class Mutation
 {
-    public MutationUpsert
-    (
 
-    )
-    {
-
-    }
 }
