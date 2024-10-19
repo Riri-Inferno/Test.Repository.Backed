@@ -42,7 +42,7 @@ public class Query
         [Service]IReadUserListUsecase readUserListUsecase
     )
     {
-        var response = await readUserListUsecase.ExcuteAsync();
+        var response = await readUserListUsecase.ExecuteAsync();
         return response;
     }
 }
