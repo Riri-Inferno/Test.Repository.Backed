@@ -5,7 +5,6 @@ using TestBackend.Models.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace TestBackend.Interactor;
 
 public class ReadUserListInteractor : IReadUserListUsecase
