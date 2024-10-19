@@ -6,13 +6,16 @@ namespace TestBackend.Controllers;
 public class Query
 {
     private readonly IUserReadUsecase _userReadUsecase;
+    private readonly IReadUserListUsecase _readUserListUsecase;
 
     public Query
     (
-        IUserReadUsecase userReadUsecase
+        IUserReadUsecase userReadUsecase,
+        IReadUserListUsecase readUserListUsecase
     )
     {
         _userReadUsecase = userReadUsecase;
+        _readUserListUsecase = readUserListUsecase;
     }
 
     /// <summary>
@@ -27,6 +30,19 @@ public class Query
     )
     {
         var response = await userReadUsecase.ExcuteAsync(id);
+        return response;
+    }
+
+    /// <summary>
+    /// User一覧取得クエリ
+    /// <param name="readUserListUsecase">User一覧取得ユースケース</param>
+    /// <returns>取得したユーザーレコード</returns>
+    public async Task<List<ReadUserResponse>> GetUserListAsync
+    (
+        [Service]IReadUserListUsecase readUserListUsecase
+    )
+    {
+        var response = await readUserListUsecase.ExcuteAsync();
         return response;
     }
 }
