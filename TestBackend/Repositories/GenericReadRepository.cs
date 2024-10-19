@@ -41,6 +41,11 @@ namespace TestBackend.Repositories
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
+        public IQueryable<T> QueryByConditionAsync(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.Where(predicate);
+        }
+
         // 存在確認用の ExistsAsync メソッドを追加
         public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
         {

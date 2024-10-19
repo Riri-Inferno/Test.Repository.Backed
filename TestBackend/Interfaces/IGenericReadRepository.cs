@@ -11,6 +11,7 @@ namespace TestBackend.Interfaces
         IQueryable<T> GetQueryableAsync();
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        IQueryable<T> QueryByConditionAsync(Expression<Func<T, bool>> predicate);
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
     }
 }
