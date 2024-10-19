@@ -25,6 +25,11 @@ namespace TestBackend.Repositories
             return await _dbSet.ToListAsync();
         }
 
+        public IQueryable<T> GetQueryableAsync()
+        {
+            return _dbSet;
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
@@ -34,6 +39,11 @@ namespace TestBackend.Repositories
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
+        }
+
+        public IQueryable<T> QueryByConditionAsync(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.Where(predicate);
         }
 
         // 存在確認用の ExistsAsync メソッドを追加

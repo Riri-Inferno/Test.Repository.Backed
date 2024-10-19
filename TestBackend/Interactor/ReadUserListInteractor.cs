@@ -3,6 +3,7 @@ using TestBackend.Usecases;
 using TestBackend.Interactor.Dtos;
 using TestBackend.Models.Entities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestBackend.Interactor;
 
@@ -24,12 +25,10 @@ public class ReadUserListInteractor : IReadUserListUsecase
     /// Userレコード一覧取得クエリ
     /// </summary>
     /// <returns></returns>
-    public async Task<List<ReadUserResponse>> ExcuteAsync()
+    public async Task<List<ReadUserResponse>> ExecuteAsync()
     {
-        // データベースからユーザー一覧を取得するロジック
-        var user = await _userRepository.GetAllAsync();
-
-        var response = _mapper.Map<List<ReadUserResponse>>(user);
+        var usersQueryable = await _userRepository.GetQueryableAsync().ToListAsync();
+        var response = _mapper.Map<List<ReadUserResponse>>(usersQueryable);
 
         return response;
     }
