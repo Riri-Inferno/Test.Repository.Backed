@@ -25,6 +25,11 @@ namespace TestBackend.Repositories
             return await _dbSet.ToListAsync();
         }
 
+        public IQueryable<T> GetQueryableAsync()
+        {
+            return _dbSet;
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
