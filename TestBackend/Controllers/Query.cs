@@ -35,7 +35,6 @@ public class Query
 
     /// <summary>
     /// User一覧取得クエリ
-    /// <param name="id">ユーザーID</param>
     /// <param name="readUserListUsecase">User一覧取得ユースケース</param>
     /// <returns>取得したユーザーレコード</returns>
     public async Task<List<ReadUserResponse>> GetUserListAsync

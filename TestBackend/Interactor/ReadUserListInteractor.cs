@@ -2,11 +2,7 @@ using TestBackend.Interfaces;
 using TestBackend.Usecases;
 using TestBackend.Interactor.Dtos;
 using TestBackend.Models.Entities;
-using Azure;
-using TestBackend.Configrations.Configurations;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using TestBackend.Data;
 
 namespace TestBackend.Interactor;
 
@@ -27,7 +23,6 @@ public class ReadUserListInteractor : IReadUserListUsecase
     /// <summary>
     /// Userレコード一覧取得クエリ
     /// </summary>
-    /// <param name="id"></param>
     /// <returns></returns>
     public async Task<List<ReadUserResponse>> ExcuteAsync()
     {

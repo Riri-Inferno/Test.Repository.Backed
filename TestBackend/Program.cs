@@ -64,15 +64,6 @@ builder.Services.AddGraphQLServer()
                 // .AddFiltering()
                 .AddAuthorization();
 
-
-// builder.Services
-//     .AddGraphQLServer()
-//     .AddMutationType(m => m.Name("Mutation"))
-//     .AddTypeExtension<MutationCreate>()
-//     .AddTypeExtension<MutationDelete>();
-
-
-
 // 追加するリポジトリの登録
 builder.Services.AddScoped(typeof(IGenericReadRepository<>), typeof(GenericReadRepository<>));
 builder.Services.AddScoped(typeof(IGenericWriteRepository<>), typeof(GenericWriteRepository<>));
@@ -84,7 +75,6 @@ builder.Services.AddScoped<IDeleteUserUsecase, DeleteUserInteractor>();
 builder.Services.AddScoped<IUpdateUserUsecase, UpdateUserInteractor>();
 builder.Services.AddScoped<IUpsertUserUsecase, UpsertUserInteractor>();
 builder.Services.AddScoped<IReadUserListUsecase, ReadUserListInteractor>();
-
 
 // DBcontext?
 // builder.Services.AddScoped<IGenericReadRepository<User>, GenericReadRepository<User>>();
