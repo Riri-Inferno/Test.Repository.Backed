@@ -48,7 +48,7 @@ project.json
 
 # Docker 用のファイル
 Dockerfile
-docker-compose.yml
+# docker-compose.yml
 .dockerignore
 
 # GitHub Actions のワークフローの一時ファイル
